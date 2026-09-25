@@ -1,0 +1,1 @@
+"""Northwind Sales Power BI POC package."""

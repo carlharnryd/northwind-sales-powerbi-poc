@@ -1,0 +1,20 @@
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Generated data
+data/raw/
+data/warehouse/
+data/powerbi/*.csv
+data/powerbi/*.parquet
+
+# Keep report output but avoid temporary Office/Power BI files
+~$*.pbix
+*.tmp
+
+# Local environment
+.env
+.vscode/
