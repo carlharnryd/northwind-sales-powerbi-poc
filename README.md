@@ -7,8 +7,9 @@ supports a Power BI report showing sales in SEK.
 
 ## Current Status
 
-Initial project scaffold. The next implementation step is to inspect the API
-responses and then implement the extract and transform pipeline.
+The extract, transform, local warehouse build and Power BI CSV export are
+implemented. The next step is to connect Power BI Desktop to the exported CSV
+tables and build the report pages.
 
 ## Planned Architecture
 
@@ -48,8 +49,26 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 ## Planned Run Command
 
 ```powershell
-python -m src.build_warehouse
+.\.venv\Scripts\python.exe -m src.build_warehouse
 ```
+
+The command writes:
+
+- raw API payloads to `data/raw/`
+- a DuckDB database to `data/warehouse/northwind.duckdb`
+- Power BI import files to `data/powerbi/`
+
+Generated data folders are ignored by Git because they can be rebuilt from the
+public APIs.
+
+## Current Validation Snapshot
+
+Latest local validation produced:
+
+- `fact_sales`: 2,155 rows
+- distinct orders: 830
+- total sales: 9,839,628.90 SEK
+- USD/SEK rates: 1996 = 6.870, 1997 = 7.870, 1998 = 8.065
 
 ## Documentation
 
