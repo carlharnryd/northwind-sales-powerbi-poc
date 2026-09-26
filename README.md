@@ -76,3 +76,4 @@ Latest local validation produced:
 - [docs/assumptions.md](docs/assumptions.md)
 - [docs/data_model.md](docs/data_model.md)
 - [docs/ai_usage.md](docs/ai_usage.md)
+- [docs/powerbi_desktop_guide.md](docs/powerbi_desktop_guide.md)
