@@ -8,7 +8,6 @@ __pycache__/
 # Generated data
 data/raw/
 data/warehouse/
-data/powerbi/*.csv
 data/powerbi/*.parquet
 
 # Keep report output but avoid temporary Office/Power BI files
