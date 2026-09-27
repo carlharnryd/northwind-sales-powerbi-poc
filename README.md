@@ -8,8 +8,13 @@ supports a Power BI report showing sales in SEK.
 ## Current Status
 
 The extract, transform, local warehouse build and Power BI CSV export are
-implemented. The next step is to connect Power BI Desktop to the exported CSV
-tables and build the report pages.
+implemented. The Power BI report is also built and stored at
+`powerbi/northwind_sales_report.pbix`.
+
+The report uses imported data. This means the saved `.pbix` file contains the
+data needed to open and present the report, while refreshing the report from
+source requires the generated CSV files to exist at the local paths used when
+the report was built.
 
 ## Planned Architecture
 
@@ -46,7 +51,7 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 .\.venv\Scripts\Activate.ps1
 ```
 
-## Planned Run Command
+## Rebuild the Data Locally
 
 ```powershell
 .\.venv\Scripts\python.exe -m src.build_warehouse
@@ -59,7 +64,46 @@ The command writes:
 - Power BI import files to `data/powerbi/`
 
 Generated data folders are ignored by Git because they can be rebuilt from the
-public APIs.
+the public APIs. They are therefore not present in a fresh Git clone until the
+rebuild command has been run.
+
+## Start from a Fresh Clone
+
+1. Clone the repository and open the repository folder in VS Code.
+2. Confirm that Python and Power BI Desktop are installed.
+3. Create the virtual environment and install the packages using the commands
+   in **Local Setup**.
+4. Run `.\.venv\Scripts\python.exe -m src.build_warehouse` from the repository
+  root. This downloads the raw API data, creates the DuckDB warehouse and
+  writes the five CSV files under `data/powerbi/`.
+5. Open `powerbi/northwind_sales_report.pbix` in Power BI Desktop to view the
+  delivered report.
+6. If you want to refresh the report from newly generated CSV files, use
+  **Refresh** in Power BI Desktop after the rebuild has completed. The report
+  must be opened from the same local repository path, or its data-source paths
+  must be updated in Power Query.
+
+Opening the `.pbix` file and viewing its imported data does not require the
+Python environment to be active. Rebuilding or refreshing the source data does.
+
+## Repository Contents and Data Delivery
+
+Tracked in Git:
+
+- Python source code and configuration.
+- Documentation and validation results.
+- `powerbi/northwind_sales_report.pbix`, the delivered report.
+
+Generated locally and intentionally ignored by Git:
+
+- `data/raw/`, downloaded JSON payloads.
+- `data/warehouse/`, the local DuckDB database.
+- `data/powerbi/*.csv`, the report-facing export tables.
+
+The generated data is reproducible from the public Northwind OData API and the
+Riksbank API. The source values, row counts and validation totals are recorded
+in [docs/data_profile.md](docs/data_profile.md). The main limitation is that
+the APIs must be reachable when rebuilding or refreshing the data.
 
 ## Current Validation Snapshot
 
