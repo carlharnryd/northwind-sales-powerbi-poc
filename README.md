@@ -5,19 +5,27 @@ It extracts sales data from the public Northwind OData API, enriches it with yea
 exchange rates from the Riksbank API, builds a small local analytical model, and
 supports a Power BI report showing sales in SEK.
 
+**New to this repository?** Start with the [recipient guide](docs/recipient_guide.md)
+for detailed Windows instructions to download the report or clone the repository,
+run the pipeline and refresh Power BI.
+
 ## Current Status
 
 The extract, transform, local warehouse build and Power BI CSV export are
 implemented. The Power BI report is also built and stored at
 `powerbi/northwind_sales_report.pbix`.
 
-The report uses imported data. This means the saved `.pbix` file contains the
-data needed to open and present the report, while refreshing the report from
-source requires the report CSV files to exist at the local paths used when the
-report was built. The five report CSV files are included in the repository so
-the delivered project contains a ready-to-use Power BI data layer.
+**Open the report:** [Download `northwind_sales_report.pbix`](powerbi/northwind_sales_report.pbix)
+and open it with Power BI Desktop. GitHub displays the file as a download; it
+does not run the interactive report in the browser.
 
-## Planned Architecture
+The report uses imported data, so it can be opened and presented without first
+running Python. Its five CSV queries use the Power Query text parameter
+`DataFolder`. After cloning to a different local path, set that parameter once
+to the clone's `data/powerbi` folder before refreshing. The five report CSV
+files are tracked in the repository as a ready-to-use Power BI data layer.
+
+## Architecture
 
 ```text
 Northwind API + Riksbank API
@@ -75,14 +83,14 @@ fresh clone contains the data layer used by the delivered report.
 3. Create the virtual environment and install the packages using the commands
    in **Local Setup**.
 4. Run `.\.venv\Scripts\python.exe -m src.build_warehouse` from the repository
-    root. This downloads the raw API data, creates the DuckDB warehouse and
-    writes the five CSV files under `data/powerbi/`.
+   root. This downloads the raw API data, creates the DuckDB warehouse and
+   writes the five CSV files under `data/powerbi/`.
 5. Open `powerbi/northwind_sales_report.pbix` in Power BI Desktop to view the
-  delivered report.
-6. If you want to refresh the report from the CSV files, use **Refresh** in
-  Power BI Desktop. To refresh from a newly cloned copy, the report must be
-  opened from the same local repository path used when it was created, or the
-  CSV data-source paths must be updated in Power Query.
+   delivered report.
+6. Before refreshing from this clone, set the report's `DataFolder` Power Query
+   parameter to this clone's `data/powerbi` folder. Then use **Refresh** in
+   Power BI Desktop. See [the recipient guide](docs/recipient_guide.md) for
+   the exact steps.
 
 Opening the `.pbix` file and viewing its imported data does not require the
 Python environment to be active. Rebuilding or refreshing the source data does.
@@ -128,3 +136,4 @@ Latest local validation produced:
 - [docs/data_model.md](docs/data_model.md)
 - [docs/ai_usage.md](docs/ai_usage.md)
 - [docs/powerbi_desktop_guide.md](docs/powerbi_desktop_guide.md)
+- [docs/recipient_guide.md](docs/recipient_guide.md)
